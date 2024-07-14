@@ -17,8 +17,14 @@ public class Demo {
         setLabel("This is a polygon");
         fill(yellow);
         drawBorder(red);
-        println("What is your name?");
-        String name = readln();
-        println("Hello " + name + ". Nice to meet you!");
+        while(true) {
+            println("What is your name?");
+            String name = readln();
+            if("clear".equals(name)){
+                clearConsole();
+            }else {
+                println("Hello " + name + ". Nice to meet you!");
+            }
+        }
     }
 }

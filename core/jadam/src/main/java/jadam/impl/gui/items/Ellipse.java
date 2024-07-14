@@ -21,12 +21,12 @@ public class Ellipse extends AbstractDrawItem {
     public Rectangle2D bounds(DrawContext drawContext) {
         double w= drawContext.xPixels(xRadius);
         double h= drawContext.yPixels(yRadius);
-        return DrawContextUtils.boundsByCenter(2*w, 2*h, getAttrs(), drawContext);
+        return DrawContextUtils.boundsByCenter(2*w, 2*h, getProperties(), drawContext);
     }
 
     @Override
     public void drawImpl(DrawContext drawContext) {
-        ItemProps a = getAttrs();
+        ItemProps a = getProperties();
         boolean drawLine = a.isDrawBorder();
         boolean fill = a.isFill();
         if (!drawLine && !fill) {
@@ -38,11 +38,11 @@ public class Ellipse extends AbstractDrawItem {
         int w = (int) bounds.getWidth();
         int h = (int) bounds.getHeight();
         if(fill){
-            DrawContextUtils.fillBackground(getAttrs(), drawContext, c -> c.graphics().fillOval(x, y, w, h));
+            DrawContextUtils.fillBackground(getProperties(), drawContext, c -> c.graphics().fillOval(x, y, w, h));
         }
         if(drawLine){
-            DrawContextUtils.drawLine(getAttrs(), drawContext, c -> c.graphics().drawOval(x, y, w, h));
-            DrawContextUtils.drawLabel(getAttrs(), a.getLabel(), (int) bounds.getCenterX(), (int) bounds.getCenterY(), a.getLineColor(), drawContext);
+            DrawContextUtils.drawLine(getProperties(), drawContext, c -> c.graphics().drawOval(x, y, w, h));
+            DrawContextUtils.drawLabel(getProperties(), a.getLabel(), (int) bounds.getCenterX(), (int) bounds.getCenterY(), a.getLineColor(), drawContext);
         }
     }
 }

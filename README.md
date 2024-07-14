@@ -23,7 +23,7 @@ A single import line should be necessary ;
 
 **jadam** main functions are
 
-## console functions
+## Console functions
 ```java
     println(line);
     readInt();
@@ -33,7 +33,7 @@ A single import line should be necessary ;
     readBoolean();
 ```
 
-## util functions
+## Util functions
 ```java
     eq(a,b) // null safe and array aware equals
     split(line,separators?,returnSeps?)
@@ -44,7 +44,7 @@ A single import line should be necessary ;
     ...//etc
 ```
 
-## math functions
+## Math functions and Plots
 ```java
     random();
     randomDouble(from,to);
@@ -57,7 +57,7 @@ A single import line should be necessary ;
     plot((double)->double); // plot a function
 ```
 
-## draw functions
+## Geometric Forms and Drawings
 ```java
     goTo(x,y); // set current position
     point(); // draw a point at the current position
@@ -68,14 +68,14 @@ A single import line should be necessary ;
     closePolygon(); // create a polygon based on the suite of last lineTo calls
     ellipse(xradius, yradius); // draw an ellipse à the current position
     circle(radius); // draw a circle à the current position
-    rectangle(w,h); // draw a circle à the current position
-    square(w); // draw a circle à the current position
-    text(string); // draw a circle à the current position
-    image(path); // draw a circle à the current position
+    rectangle(w,h); // draw a rectangle à the current position
+    square(w); // draw a square à the current position
+    text(string); // draw some text à the current position
+    image(path); // draw an image à the current position
 
 ```
 
-## grid manipulation
+## Grid and axes
 ```java
     setGridTicX(double); 
     setGridTicY(double); 
@@ -88,22 +88,20 @@ A single import line should be necessary ;
 
 ```
 
-## styling
+## Styling
 ```java
     setLineWidth(double); 
     setLabel(text); 
     flipH(); 
     flipV(); 
     flipVH(); 
-    setFlipH(); 
-    setFlipV(); 
-    setFlipVH(); 
-    setFlipVH(); 
-    setSize(); 
-    setSize(); 
-    setWidth(); 
-    setHeight(); 
-    setLineStyle(); 
+    setFlipH(boolean); 
+    setFlipV(boolean); 
+    setFlipVH(boolean); 
+    setSize(double,double?); 
+    setWidth(double); 
+    setHeight(double); 
+    setLineStyle(enum|string|int); 
     setLineStyleDashed(); 
     setLineStyleNormal(); 
     setBackgroundColor(); 
@@ -112,15 +110,15 @@ A single import line should be necessary ;
     setPointStyle(); 
     setLineColor(); 
     setTextColor(); 
-    fill(); 
-    drawBorder(); 
-    setFont(); 
-    setFontSize(); 
-    align();
+    fill(boolean?); 
+    drawBorder(boolean?); 
+    setFont(font|string|number); 
+    setFontSize(number); 
+    align(enum|string|int);
     rotate(angle);
 ```
 
-## animation
+## Animations
 animations are applied to the previous element
 ```java
     //animate rotation
@@ -135,7 +133,7 @@ animations are applied to the previous element
     speedDownAndUp() // use speeding down and then up animation for movements and rotations
 ```
 
-## parallel execution
+## Parallel execution
 ```java
     run(Runnable); // run in background (new thread)
     sleep(millis) // wait for millis
@@ -144,7 +142,7 @@ animations are applied to the previous element
 
 
 # Example
-He is a mode sophisticated example
+He is a more sophisticated example
 
 ![Example](documentation/demo/Example.png?raw=true "Example")
 

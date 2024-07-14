@@ -270,6 +270,9 @@ public class lib {
     public static String readln() {
         return readln(null);
     }
+    public static void clearConsole(){
+        GUI.base().clear();
+    }
 
     public static String readString() {
         return readln();
@@ -307,7 +310,7 @@ public class lib {
         GUI.base().rotate(fromAngle, toAngle, seconds);
     }
 
-    public static void rotate(int angle) {
+    public static void rotate(double angle) {
         GUI.base().rotate(angle);
     }
 
@@ -332,11 +335,11 @@ public class lib {
     }
 
     public static void linearCurve() {
-        GUI.base().setCurve(StepCurveMode.LINEAR);
+        GUI.base().setCurve(CurveMode.LINEAR);
     }
 
     public static void quadCurve() {
-        GUI.base().setCurve(StepCurveMode.QUAD);
+        GUI.base().setCurve(CurveMode.QUAD);
     }
 
     public static boolean eq(Object a, Object b) {
@@ -603,12 +606,12 @@ public class lib {
     }
 
     public static void hideGrid() {
-        GUI.base().drawGrid().pen.setVisible(false);
+        GUI.base().drawGrid().props.setVisible(false);
         GUI.base().refresh();
     }
 
     public static void showGrid() {
-        GUI.base().drawGrid().pen.setVisible(true);
+        GUI.base().drawGrid().props.setVisible(true);
         GUI.base().refresh();
     }
 

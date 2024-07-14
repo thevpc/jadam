@@ -93,7 +93,7 @@ public class Image extends DrawItemBoundedBase {
 
     @Override
     public Runnable run(String name, Object... args) {
-        Runnable runnable = pen.runnable(name, args);
+        Runnable runnable = props.runnable(name, args);
         if (runnable != null) {
             return runnable;
         }
@@ -154,7 +154,7 @@ public class Image extends DrawItemBoundedBase {
 
     @Override
     protected void drawImpl(DrawContext drawContext, Rectangle2D bounds) {
-        ItemProps a = getAttrs();
+        ItemProps a = getProperties();
         Graphics2D g = drawContext.graphics();
         boolean drawLine = a.isDrawBorder();
         boolean fill = a.isFill();
@@ -170,15 +170,15 @@ public class Image extends DrawItemBoundedBase {
         int h = (int) bounds.getHeight();
 
         if (fill) {
-            DrawContextUtils.fillBackground(getAttrs(), drawContext, c -> c.graphics().fillRect(x, y, w, h));
+            DrawContextUtils.fillBackground(getProperties(), drawContext, c -> c.graphics().fillRect(x, y, w, h));
         }
         if(javaImage!=null) {
             g.drawImage(validImage(), x, y, drawContext.imageObserver());
         }
         if (drawLine) {
-            DrawContextUtils.drawBorder(getAttrs(), drawContext, c -> c.graphics().drawRect(x, y, w, h));
+            DrawContextUtils.drawBorder(getProperties(), drawContext, c -> c.graphics().drawRect(x, y, w, h));
         }
-        DrawContextUtils.drawLabel(getAttrs(), a.getLabel(), (int) bounds.getCenterX(), (int) bounds.getCenterY(), a.getLineColor(), drawContext);
+        DrawContextUtils.drawLabel(getProperties(), a.getLabel(), (int) bounds.getCenterX(), (int) bounds.getCenterY(), a.getLineColor(), drawContext);
     }
 
 }

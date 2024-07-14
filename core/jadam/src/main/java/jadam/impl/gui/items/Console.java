@@ -3,6 +3,7 @@ package jadam.impl.gui.items;
 import jadam.impl.gui.DrawContext;
 import jadam.impl.gui.DrawItem;
 import jadam.impl.gui.ItemBuildContext;
+import jadam.impl.util.ColorUtils;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -19,6 +20,7 @@ public class Console implements DrawItem {
         private Color outputColor = Color.BLACK;
         private Color cursorColor = Color.RED;
         private Color currColor = Color.RED.darker();
+        private Color currColor2 = Color.YELLOW.darker();
 
         public CurrAtt copy() {
             try {
@@ -143,8 +145,12 @@ public class Console implements DrawItem {
                 }
             } else if (codePoint == '\b') {
                 if (curr.text.length() > 0) {
-                    curr.text = curr.text.substring(0, curr.cursor - 1)+curr.text.substring(curr.cursor);
-                    curr.cursor--;
+                    if(curr.cursor<=0){
+                        //curr.text = curr.text.substring(curr.cursor+1);
+                    }else {
+                        curr.text = curr.text.substring(0, curr.cursor - 1) + curr.text.substring(curr.cursor);
+                        curr.cursor--;
+                    }
                 }
 
             } else if (codePoint == 127 /*DEL*/) {
@@ -169,7 +175,7 @@ public class Console implements DrawItem {
                 if (curr.cursor >= curr.text.length()) {
                     curr.text += c;
                 } else {
-                    curr.text += curr.text.substring(0, curr.cursor) + c + curr.text.substring(curr.cursor);
+                    curr.text = curr.text.substring(0, curr.cursor) + c + curr.text.substring(curr.cursor);
                 }
                 curr.cursor++;
             }
@@ -180,10 +186,6 @@ public class Console implements DrawItem {
         return false;
     }
 
-    @Override
-    public void tic(long tic) {
-
-    }
 
     public String readln() {
         curr.enabled = true;
@@ -230,6 +232,9 @@ public class Console implements DrawItem {
                         fill.add(new Row(rr.mode, line, true, rr.att));
                         break;
                     } else {
+                        if(maxCols<=0){
+                            break;
+                        }
                         String s = line.substring(0, maxCols);
                         fill.add(new Row(rr.mode, s, true, rr.att));
                         line = line.substring(maxCols);
@@ -237,6 +242,10 @@ public class Console implements DrawItem {
                 }
             }
         }
+    }
+
+    public void clear(){
+        rows0.clear();
     }
 
     private enum RowMode {
@@ -276,6 +285,12 @@ public class Console implements DrawItem {
                     g.drawString(t, x, y);
                     g.setColor(att.cursorColor);
                     if (tic % 1000 < 400) {
+                        g.setColor(att.currColor);
+                        g.setFont(monospacedBold);
+                        g.drawString("_", x + (cursor * w), y + 5);
+                        g.setFont(monospaced);
+                    }else{
+                        g.setColor(att.currColor2);
                         g.setFont(monospacedBold);
                         g.drawString("_", x + (cursor * w), y + 5);
                         g.setFont(monospaced);

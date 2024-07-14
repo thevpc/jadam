@@ -25,14 +25,14 @@ public class Line extends AbstractDrawItem {
     @Override
     public String toString() {
         return "Line{" +
-                "from=" + pen.getPoint() +
+                "from=" + props.getPoint() +
                 "to=" + to +
                 '}';
     }
 
     @Override
     public Rectangle2D bounds(DrawContext c) {
-        ItemProps a = getAttrs();
+        ItemProps a = getProperties();
         Graphics2D g = c.graphics();
         double fromX = c.xPixels(a.getX());
         double fromY = c.yPixels(a.getY());
@@ -51,8 +51,8 @@ public class Line extends AbstractDrawItem {
 
     @Override
     public void drawImpl(DrawContext drawContext) {
-        DrawContextUtils.drawLine(getAttrs(), drawContext, c -> {
-            ItemProps a = getAttrs();
+        DrawContextUtils.drawLine(getProperties(), drawContext, c -> {
+            ItemProps a = getProperties();
             Graphics2D g = c.graphics();
             double fromX = c.xPixels(a.getX());
             double fromY = c.yPixels(a.getY());
@@ -60,14 +60,14 @@ public class Line extends AbstractDrawItem {
             double toY = c.yPixels(to.getY());
             g.drawLine((int) fromX, (int) fromY, (int) toX, (int) toY);
             Rectangle2D bounds = bounds(c);
-            DrawContextUtils.drawLabel(getAttrs(), a.getLabel(), (int) bounds.getCenterX(), (int) bounds.getCenterY(), a.getLineColor(), drawContext);
+            DrawContextUtils.drawLabel(getProperties(), a.getLabel(), (int) bounds.getCenterX(), (int) bounds.getCenterY(), a.getLineColor(), drawContext);
         });
     }
 
     @Override
     public void onAdd(ItemBuildContext buildContext) {
         super.onAdd(buildContext);
-        buildContext.typeProps().setXY(to);
+        buildContext.typeProps().setPoint(to);
         buildContext.globalProps().setXY(to);
     }
 }

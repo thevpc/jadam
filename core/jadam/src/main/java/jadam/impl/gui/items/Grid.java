@@ -34,13 +34,21 @@ public class Grid extends AbstractDrawItem {
         }
         switch (name) {
             case "setGridTicX": {
-                return () -> xStep = ((Number) args[0]).doubleValue();
+                return () -> setGridTicX(((Number) args[0]).doubleValue());
             }
             case "setGridTicY": {
-                return () -> yStep = ((Number) args[0]).doubleValue();
+                return () -> setGridTicY(((Number) args[0]).doubleValue());
             }
         }
         return null;
+    }
+
+    public void setGridTicX(double d) {
+        xStep = d;
+    }
+
+    public void setGridTicY(double d) {
+        yStep = d;
     }
 
     @Override

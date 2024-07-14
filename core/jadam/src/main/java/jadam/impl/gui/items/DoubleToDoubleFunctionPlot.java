@@ -25,10 +25,10 @@ public class DoubleToDoubleFunctionPlot extends AbstractDrawItem {
 
     @Override
     public void drawImpl(DrawContext drawContext) {
-        ItemProps a = getAttrs();
+        ItemProps a = getProperties();
         Rectangle2D bounds = bounds(drawContext);
         int steps=drawContext.size().width*10;
-        DrawContextUtils.drawLine(getAttrs(), drawContext, c -> {
+        DrawContextUtils.drawLine(getProperties(), drawContext, c -> {
             GlobalProps gp = drawContext.getGlobalProps();
             double[] xx = ArrayUtils.dtimes(gp.getGridMinX(), gp.getGridMaxX(), steps);
             double[] yy = new double[xx.length];
@@ -48,6 +48,6 @@ public class DoubleToDoubleFunctionPlot extends AbstractDrawItem {
                 }
             }
         });
-        DrawContextUtils.drawLabel(getAttrs(), a.getLabel(), (int) bounds.getCenterX(), (int) bounds.getCenterY(), a.getLineColor(), drawContext);
+        DrawContextUtils.drawLabel(getProperties(), a.getLabel(), (int) bounds.getCenterX(), (int) bounds.getCenterY(), a.getLineColor(), drawContext);
     }
 }

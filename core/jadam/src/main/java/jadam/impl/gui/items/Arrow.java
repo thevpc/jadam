@@ -3,7 +3,6 @@ package jadam.impl.gui.items;
 import jadam.impl.gui.AbstractDrawItem;
 import jadam.impl.gui.DrawContext;
 import jadam.impl.gui.ItemProps;
-import jadam.impl.gui.ItemBuildContext;
 import jadam.impl.util.DrawContextUtils;
 
 import java.awt.*;
@@ -24,7 +23,7 @@ public class Arrow extends AbstractDrawItem {
 
     @Override
     public Rectangle2D bounds(DrawContext c) {
-        ItemProps a = getAttrs();
+        ItemProps a = getProperties();
         Graphics2D g = c.graphics();
         double fromX = c.xPixels(a.getX());
         double fromY = c.yPixels(a.getY());
@@ -43,8 +42,8 @@ public class Arrow extends AbstractDrawItem {
 
     @Override
     public void drawImpl(DrawContext drawContext) {
-        DrawContextUtils.drawLine(getAttrs(), drawContext, c -> {
-            ItemProps a = getAttrs();
+        DrawContextUtils.drawLine(getProperties(), drawContext, c -> {
+            ItemProps a = getProperties();
             Graphics2D g = c.graphics();
             double fromX = c.xPixels(a.getX());
             double fromY = c.yPixels(a.getY());
@@ -57,7 +56,7 @@ public class Arrow extends AbstractDrawItem {
                     drawContext
             );
             Rectangle2D bounds = bounds(c);
-            DrawContextUtils.drawLabel(getAttrs(), a.getLabel(), (int) toX, (int) toY, a.getLineColor(), drawContext);
+            DrawContextUtils.drawLabel(getProperties(), a.getLabel(), (int) toX, (int) toY, a.getLineColor(), drawContext);
         });
     }
 

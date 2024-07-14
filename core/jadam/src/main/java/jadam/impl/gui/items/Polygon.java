@@ -16,7 +16,7 @@ public class Polygon extends AbstractDrawItem {
 
     @Override
     public Rectangle2D bounds(DrawContext drawContext) {
-        ItemProps a = getAttrs();
+        ItemProps a = getProperties();
         boolean drawLine = a.isDrawBorder();
         boolean fill = a.isFill();
         if (!drawLine && !fill) {
@@ -54,7 +54,7 @@ public class Polygon extends AbstractDrawItem {
 
     @Override
     public void drawImpl(DrawContext drawContext) {
-        ItemProps a = getAttrs();
+        ItemProps a = getProperties();
         boolean drawLine = a.isDrawBorder();
         boolean fill = a.isFill();
         if (!drawLine && !fill) {
@@ -68,13 +68,13 @@ public class Polygon extends AbstractDrawItem {
         }
 
         if (fill) {
-            DrawContextUtils.fillBackground(getAttrs(), drawContext, c -> c.graphics().fillPolygon(xx, yy, xx.length));
+            DrawContextUtils.fillBackground(getProperties(), drawContext, c -> c.graphics().fillPolygon(xx, yy, xx.length));
         }
         if (drawLine) {
-            DrawContextUtils.drawLine(getAttrs(), drawContext, c -> c.graphics().drawPolygon(xx, yy, xx.length));
+            DrawContextUtils.drawLine(getProperties(), drawContext, c -> c.graphics().drawPolygon(xx, yy, xx.length));
         }
         Rectangle2D bounds = bounds(drawContext);
-        DrawContextUtils.drawLabel(getAttrs(), a.getLabel(), (int) bounds.getCenterX(), (int) bounds.getCenterY(), a.getLineColor(), drawContext);
+        DrawContextUtils.drawLabel(getProperties(), a.getLabel(), (int) bounds.getCenterX(), (int) bounds.getCenterY(), a.getLineColor(), drawContext);
     }
 
     @Override
@@ -89,7 +89,7 @@ public class Polygon extends AbstractDrawItem {
                     lines.add(item);
                 } else {
                     Line last = lines.get(lines.size()-1);
-                    Point2D point2D = last.getAttrs().getPoint();
+                    Point2D point2D = last.getProperties().getPoint();
                     if (point2D.equals(item.getTo())) {
                         lines.add(item);
                     } else {
@@ -104,7 +104,7 @@ public class Polygon extends AbstractDrawItem {
             throw new IllegalArgumentException("missing lines to create polygon");
         }
         for (int i = lines.size() - 1; i >= 0; i--) {
-            points.add(new Point2D.Double(lines.get(i).getAttrs().x, lines.get(i).getAttrs().y));
+            points.add(new Point2D.Double(lines.get(i).getProperties().x, lines.get(i).getProperties().y));
         }
         points.add(lines.get(0).getTo());
         buildContext.replaceHead(lines.size() + 1, this);

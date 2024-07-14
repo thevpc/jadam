@@ -18,14 +18,14 @@ public class Text extends DrawItemBoundedBase {
     @Override
     public Dimension preferredSize(DrawContext drawContext, Dimension d) {
         Graphics2D g = drawContext.graphics();
-        g.setFont(getAttrs().getFont());
+        g.setFont(getProperties().getFont());
         Rectangle2D b = g.getFontMetrics().getStringBounds(text, g);
         return new Dimension((int) b.getWidth(), (int) b.getHeight());
     }
 
     @Override
     protected void drawImpl(DrawContext drawContext, Rectangle2D r) {
-        ItemProps a = getAttrs();
+        ItemProps a = getProperties();
         Graphics2D g = drawContext.graphics();
         boolean drawLine = a.isDrawBorder();
         boolean fill = a.isFill();
@@ -41,14 +41,14 @@ public class Text extends DrawItemBoundedBase {
             }
         }
         if (fill) {
-            DrawContextUtils.fillBackground(getAttrs(), drawContext, c -> c.graphics().fillRect(x, y, w, h));
+            DrawContextUtils.fillBackground(getProperties(), drawContext, c -> c.graphics().fillRect(x, y, w, h));
         }
 
         g.setFont(a.getFont());
         g.drawString(text, x, y);
 
         if (drawLine) {
-            DrawContextUtils.drawBorder(getAttrs(), drawContext, c -> c.graphics().drawRect(x, y, w, h));
+            DrawContextUtils.drawBorder(getProperties(), drawContext, c -> c.graphics().drawRect(x, y, w, h));
         }
     }
 

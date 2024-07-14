@@ -24,7 +24,7 @@ public class ItemProps implements Cloneable{
     public boolean visible=true;
     public Align align=Align.TOP_LEFT;
     public SpeedFunction speed = SpeedFunction.ACCELERATE_DECELERATE;
-    public StepCurveMode curve = StepCurveMode.LINEAR;
+    public CurveMode curve = CurveMode.LINEAR;
 
     private double w=100;
     private double h=100;
@@ -101,11 +101,11 @@ public class ItemProps implements Cloneable{
         return this;
     }
 
-    public StepCurveMode getCurve() {
+    public CurveMode getCurve() {
         return curve;
     }
 
-    public ItemProps setCurve(StepCurveMode curve) {
+    public ItemProps setCurve(CurveMode curve) {
         this.curve = curve;
         return this;
     }
@@ -154,7 +154,7 @@ public class ItemProps implements Cloneable{
         return x;
     }
 
-    public ItemProps setXY(Point2D  p) {
+    public ItemProps setPoint(Point2D  p) {
         this.x=p.getX();
         this.y=p.getY();
         return this;

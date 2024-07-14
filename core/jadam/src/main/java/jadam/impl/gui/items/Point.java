@@ -17,7 +17,7 @@ public class Point extends AbstractDrawItem {
 
     @Override
     public Rectangle2D bounds(DrawContext c) {
-        ItemProps a = getAttrs();
+        ItemProps a = getProperties();
         double x = c.xPixels(a.getX());
         double y = c.yPixels(a.getY());
         double size = 8;
@@ -31,8 +31,8 @@ public class Point extends AbstractDrawItem {
 
     @Override
     public void drawImpl(DrawContext drawContext) {
-        DrawContextUtils.drawPoint(getAttrs(), drawContext, c -> {
-            ItemProps a = getAttrs();
+        DrawContextUtils.drawPoint(getProperties(), drawContext, c -> {
+            ItemProps a = getProperties();
             Graphics2D g = c.graphics();
             Rectangle2D b = bounds(c);
             switch (a.getPointStyle()) {
@@ -48,7 +48,7 @@ public class Point extends AbstractDrawItem {
                     g.fillOval((int) b.getMinX(), (int) b.getMinY(), (int) b.getWidth(), (int) b.getHeight());
                 }
             }
-            DrawContextUtils.drawLabel(getAttrs(), a.getLabel(), (int) b.getCenterX(), (int) b.getCenterY(), a.getPointColor(), drawContext);
+            DrawContextUtils.drawLabel(getProperties(), a.getLabel(), (int) b.getCenterX(), (int) b.getCenterY(), a.getPointColor(), drawContext);
         });
     }
 

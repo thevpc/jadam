@@ -18,7 +18,7 @@ public abstract class DrawItemBoundedBase extends AbstractDrawItem {
 
     @Override
     public Rectangle2D bounds(DrawContext drawContext) {
-        ItemProps a = getAttrs();
+        ItemProps a = getProperties();
         double pw = drawContext.wPixels(a.getW());
         double ph = drawContext.hPixels(a.getH());
         Dimension d2 = preferredSize(drawContext, new Dimension((int) pw, (int) ph));

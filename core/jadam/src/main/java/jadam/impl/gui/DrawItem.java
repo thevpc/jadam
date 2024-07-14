@@ -12,12 +12,9 @@ public interface DrawItem {
 
     String type();
 
-
     void draw(DrawContext drawContext);
 
     Runnable run(String name, Object... args);
-
-    void tic(long tic);
 
     void onAdd(ItemBuildContext buildContext);
 }

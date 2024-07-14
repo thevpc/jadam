@@ -1,7 +1,7 @@
 package jadam.impl.util;
 
 import jadam.SpeedFunction;
-import jadam.StepCurveMode;
+import jadam.CurveMode;
 
 import java.awt.geom.Point2D;
 
@@ -68,7 +68,7 @@ public class ArrayUtils {
         return d;
     }
 
-    public static Point2D[] ptimes(Point2D p1, Point2D p3, int times, StepCurveMode mode, SpeedFunction acc) {
+    public static Point2D[] ptimes(Point2D p1, Point2D p3, int times, CurveMode mode, SpeedFunction acc) {
         switch (mode) {
             case LINEAR -> {
                 return pltimes(p1, p3, times, acc);

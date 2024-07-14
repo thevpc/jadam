@@ -20,7 +20,7 @@ public class Rectangle extends AbstractDrawItem {
 
     @Override
     public Rectangle2D bounds(DrawContext c) {
-        ItemProps a = getAttrs();
+        ItemProps a = getProperties();
         double fromX = c.xPixels(a.getX());
         double fromY = c.yPixels(a.getY());
         double toX = c.xPixels(a.getX()+width);
@@ -38,7 +38,7 @@ public class Rectangle extends AbstractDrawItem {
 
     @Override
     public void drawImpl(DrawContext drawContext) {
-        ItemProps a = getAttrs();
+        ItemProps a = getProperties();
         boolean drawLine = a.isDrawBorder();
         boolean fill = a.isFill();
         if (!drawLine && !fill) {
@@ -46,17 +46,17 @@ public class Rectangle extends AbstractDrawItem {
         }
         Rectangle2D bounds = bounds(drawContext);
         if(fill) {
-            DrawContextUtils.fillBackground(getAttrs(), drawContext, c -> {
+            DrawContextUtils.fillBackground(getProperties(), drawContext, c -> {
                 Graphics2D g = c.graphics();
                 g.fillRect((int) bounds.getMinX(), (int) bounds.getMinY(), (int) bounds.getWidth(), (int) bounds.getHeight());
             });
         }
         if(drawLine) {
-            DrawContextUtils.drawLine(getAttrs(), drawContext, c -> {
+            DrawContextUtils.drawLine(getProperties(), drawContext, c -> {
                 Graphics2D g = c.graphics();
                 g.drawRect((int) bounds.getMinX(), (int) bounds.getMinY(), (int) bounds.getWidth(), (int) bounds.getHeight());
             });
         }
-        DrawContextUtils.drawLabel(getAttrs(), a.getLabel(), (int) bounds.getCenterX(), (int) bounds.getCenterY(), a.getLineColor(), drawContext);
+        DrawContextUtils.drawLabel(getProperties(), a.getLabel(), (int) bounds.getCenterX(), (int) bounds.getCenterY(), a.getLineColor(), drawContext);
     }
 }

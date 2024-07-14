@@ -5,7 +5,7 @@
 package jadam.impl.gui;
 
 import jadam.SpeedFunction;
-import jadam.StepCurveMode;
+import jadam.CurveMode;
 import jadam.impl.gui.items.Console;
 import jadam.impl.gui.items.Grid;
 
@@ -76,6 +76,11 @@ public class AdamDrawComponent extends JComponent {
             }
         }
         return null;
+    }
+
+    public void clear() {
+        console().clear();
+        refresh();
     }
 
     public void println(String text) {
@@ -149,17 +154,17 @@ public class AdamDrawComponent extends JComponent {
         AbstractDrawItem i = lastAbstractDrawItem();
         if (i != null) {
             sharedAttrsByType(i.type()).setSpeed(speedFunction);
-            i.getAttrs().setSpeed(speedFunction);
+            i.getProperties().setSpeed(speedFunction);
         } else {
             sharedAttrsByType("").setSpeed(speedFunction);
         }
     }
 
-    public void setCurve(StepCurveMode curve) {
+    public void setCurve(CurveMode curve) {
         AbstractDrawItem i = lastAbstractDrawItem();
         if (i != null) {
             sharedAttrsByType(i.type()).setCurve(curve);
-            i.getAttrs().setCurve(curve);
+            i.getProperties().setCurve(curve);
         } else {
             sharedAttrsByType("").setCurve(curve);
         }

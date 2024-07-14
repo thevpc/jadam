@@ -18,13 +18,13 @@ public class Circle extends AbstractDrawItem {
     @Override
     public Rectangle2D bounds(DrawContext drawContext) {
         double w= drawContext.wPixels(radius);
-        return DrawContextUtils.boundsByCenter(2*w, 2*w, getAttrs(), drawContext);
+        return DrawContextUtils.boundsByCenter(2*w, 2*w, getProperties(), drawContext);
     }
 
 
     @Override
     public void drawImpl(DrawContext drawContext) {
-        ItemProps a = getAttrs();
+        ItemProps a = getProperties();
         boolean drawLine = a.isDrawBorder();
         boolean fill = a.isFill();
         if (!drawLine && !fill) {
@@ -36,11 +36,11 @@ public class Circle extends AbstractDrawItem {
         int w = (int) bounds.getWidth();
         int h = (int) bounds.getHeight();
         if(fill){
-            DrawContextUtils.fillBackground(getAttrs(), drawContext, c -> c.graphics().fillOval(x, y, w, h));
+            DrawContextUtils.fillBackground(getProperties(), drawContext, c -> c.graphics().fillOval(x, y, w, h));
         }
         if(drawLine){
-            DrawContextUtils.drawLine(getAttrs(), drawContext, c -> c.graphics().drawOval(x, y, w, h));
+            DrawContextUtils.drawLine(getProperties(), drawContext, c -> c.graphics().drawOval(x, y, w, h));
         }
-        DrawContextUtils.drawLabel(getAttrs(), a.getLabel(), (int) bounds.getCenterX(), (int) bounds.getCenterY(), a.getLineColor(), drawContext);
+        DrawContextUtils.drawLabel(getProperties(), a.getLabel(), (int) bounds.getCenterX(), (int) bounds.getCenterY(), a.getLineColor(), drawContext);
     }
 }

@@ -1,6 +1,6 @@
 package jadam;
 
-public enum StepCurveMode {
+public enum CurveMode {
     LINEAR,
     QUAD,
 }
