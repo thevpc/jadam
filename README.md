@@ -9,6 +9,11 @@ It mainly hides Object Oriented Paradigms while offering visual appealing progra
 
 **jadam** provides both console and UI capabilities and allow children to play with geometrical forms, images and animations.
 
+![Example](documentation/demo/Demo-src.png?raw=true "Srouce Code")
+![Example](documentation/demo/Demo.png?raw=true "Example")
+
+# Available functions
+
 A single import line should be necessary ;
 
 ```java
@@ -138,10 +143,7 @@ annimations are applied to the previous element
 
 
 
-# Examples
-![Example](documentation/demo/Demo.png?raw=true "Example")
-![Example](documentation/demo/Demo-src.png?raw=true "Srouce Code")
-
+# Example
 He is a mode sophisticated example
 
 ![Example](documentation/demo/Example.png?raw=true "Example")
