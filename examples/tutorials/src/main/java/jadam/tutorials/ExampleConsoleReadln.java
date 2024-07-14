@@ -6,9 +6,6 @@ package jadam.tutorials;
 
 import static jadam.lib.*;
 
-/**
- * @author vpc
- */
 public class ExampleConsoleReadln {
     public static void main(String[] args) {
         while(true) {
