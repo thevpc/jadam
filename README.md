@@ -123,9 +123,9 @@ A single import line should be necessary ;
 ## animation
 animations are applied to the previous element
 ```java
-    animate rotation
+    //animate rotation
     rotate(double fromAngle, double toAngle, int seconds);
-    animate move
+    //animate move
     move(double fromAngle, double toAngle, int seconds);
     quadCurve(); // use quadratic curves for movements
     linearCurve(); // use linear curves for movements
