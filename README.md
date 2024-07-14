@@ -121,7 +121,7 @@ A single import line should be necessary ;
 ```
 
 ## animation
-annimations are applied to the previous element
+animations are applied to the previous element
 ```java
     animate rotation
     rotate(double fromAngle, double toAngle, int seconds);
