@@ -138,3 +138,40 @@ annimations are applied to the previous element
 
 
 ![Example](documentation/demo/Example.png?raw=true "Example")
+
+
+# Maven support
+Here is a simple **pom.xml** file to be able to use **jadam**
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>net.thevpc.jadam.examples</groupId>
+    <artifactId>jadam-tutorials</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>net.thevpc.jadam</groupId>
+            <artifactId>jadam</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
+    <repositories>
+        <repository>
+            <id>thevpc</id>
+            <name>thevpc</name>
+            <url>https://thevpc.net/maven</url>
+        </repository>
+    </repositories>
+</project>
+
+```
+
+An empty project under examples folder is provided as a starting project template
