@@ -4,7 +4,7 @@ Kids Java Programming Library
 
 Java is a professional programming language and widely seen as difficult for children.
 
-This project aims to make the Java programming language accessible for kids? 
+This project aims to make the Java programming language accessible for kids. 
 It mainly hides Object Oriented Paradigms while offering visual appealing programming capabilities.
 
 **jadam** provides both console and UI capabilities and allow children to play with geometrical forms, images and animations.
