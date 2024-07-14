@@ -26,11 +26,11 @@ A single import line should be necessary ;
 ## console functions
 ```java
     println(line);
-    String readInt();
-    String readLong();
-    String readDouble();
-    String readFloat();
-    String readBoolean();
+    readInt();
+    readLong();
+    readDouble();
+    readFloat();
+    readBoolean();
 ```
 
 ## util functions
