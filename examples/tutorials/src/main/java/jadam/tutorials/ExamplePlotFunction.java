@@ -11,7 +11,7 @@ import static jadam.lib.*;
  */
 public class ExamplePlotFunction {
     public static void main(String[] args) {
-        setGridInterval(-10,10);
+        setGridInterval(10);
         setGridTic(1);
         drawGrid();
         plot(x->sin(x));

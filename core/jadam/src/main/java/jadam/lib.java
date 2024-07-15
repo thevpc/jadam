@@ -629,6 +629,12 @@ public class lib {
         setGridIntervalY(min, max);
     }
 
+    public static void setGridInterval(double max) {
+        max=Math.abs(max);
+        setGridIntervalX(-max, max);
+        setGridIntervalY(-max, max);
+    }
+
     public static void setGridIntervalX(double minX, double maxX) {
         GUI.base().drawGrid();
         GUI.base().setGridIntervalX(minX, maxX);

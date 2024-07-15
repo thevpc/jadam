@@ -4,6 +4,8 @@
  */
 package jadam.tutorials;
 
+import jadam.*;
+
 import static jadam.lib.*;
 
 /**
@@ -21,10 +23,12 @@ public class ExamplePoint {
 
         point(0, 20);
         setPointColor(darkBlue);
+        setPointStyle(PointStyle.DOT);
         setLabel("Point C");
 
         point(20, 20);
-        setPointColor(darkBlue);
+        setPointColor(darkRed);
+        setPointStyle(PointStyle.PLUS);
         setLabel("Point D");
 
 

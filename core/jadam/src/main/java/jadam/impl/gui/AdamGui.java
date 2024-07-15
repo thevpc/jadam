@@ -67,6 +67,7 @@ public class AdamGui implements AdamLib {
     private boolean ensureFrame() {
         if (currentFrame == null) {
             currentFrame = new JFrame();
+            currentFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     currentFrame.setTitle("JAdam Console");
