@@ -18,9 +18,25 @@ public class AdamGui implements AdamLib {
     AdamDrawComponent draw;
 
     @Override
-    public String readln(String message) {
+    public String readln() {
         getFrame();
         return draw.readln();
+    }
+
+    @Override
+    public String readln(Object message) {
+        getFrame();
+        return draw.readln(message);
+//        if (message == null) {
+//            message = "";
+//        }
+//        return JOptionPane.showInputDialog(null, message);
+    }
+
+    @Override
+    public String read(Object message) {
+        getFrame();
+        return draw.read(message);
 //        if (message == null) {
 //            message = "";
 //        }
@@ -34,9 +50,16 @@ public class AdamGui implements AdamLib {
 
 
     @Override
-    public void println(String message) {
+    public void println(Object message) {
         getFrame();
         draw.println(message);
+//        JOptionPane.showMessageDialog(null, message);
+    }
+
+    @Override
+    public void print(Object message) {
+        getFrame();
+        draw.printMessage(message);
 //        JOptionPane.showMessageDialog(null, message);
     }
 

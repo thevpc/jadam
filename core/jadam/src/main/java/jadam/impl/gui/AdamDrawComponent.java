@@ -83,13 +83,26 @@ public class AdamDrawComponent extends JComponent {
         refresh();
     }
 
-    public void println(String text) {
+    public void printMessage(Object text) {
+        console().print(text);
+        refresh();
+    }
+
+    public void println(Object text) {
         console().println(text);
         refresh();
     }
 
     public String readln() {
         return console().readln();
+    }
+
+    public String readln(Object line) {
+        return console().readln(line);
+    }
+
+    public String read(Object line) {
+        return console().read(line);
     }
 
     private Console console() {
@@ -192,7 +205,7 @@ public class AdamDrawComponent extends JComponent {
         }
     }
 
-    public void rotate(double angle) {
+    public void setAngle(double angle) {
         AbstractDrawItem i = lastAbstractDrawItem();
         if (i != null) {
             i.rotate(angle);

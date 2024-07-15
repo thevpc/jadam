@@ -41,6 +41,7 @@ public class Console implements DrawItem {
     private Font monospaced = new Font("Monospaced", Font.PLAIN, 16);
     private Font monospacedBold = new Font("Monospaced", Font.BOLD, 16);
     private ItemBuildContext buildContext;
+
     @Override
     public String type() {
         return "console";
@@ -48,7 +49,7 @@ public class Console implements DrawItem {
 
     @Override
     public void onAdd(ItemBuildContext buildContext) {
-        this.buildContext=buildContext;
+        this.buildContext = buildContext;
     }
 
     @Override
@@ -145,18 +146,18 @@ public class Console implements DrawItem {
                 }
             } else if (codePoint == '\b') {
                 if (curr.text.length() > 0) {
-                    if(curr.cursor<=0){
+                    if (curr.cursor <= 0) {
                         //curr.text = curr.text.substring(curr.cursor+1);
-                    }else {
+                    } else {
                         curr.text = curr.text.substring(0, curr.cursor - 1) + curr.text.substring(curr.cursor);
                         curr.cursor--;
                     }
                 }
 
             } else if (codePoint == 127 /*DEL*/) {
-                if (curr.text.length() > 0 && curr.cursor<curr.text.length()) {
-                    curr.text = curr.text.substring(0, curr.cursor)+curr.text.substring(curr.cursor+1);
-                    if(curr.cursor>0 && curr.cursor>=curr.text.length()) {
+                if (curr.text.length() > 0 && curr.cursor < curr.text.length()) {
+                    curr.text = curr.text.substring(0, curr.cursor) + curr.text.substring(curr.cursor + 1);
+                    if (curr.cursor > 0 && curr.cursor >= curr.text.length()) {
                         curr.cursor--;
                     }
                 }
@@ -187,6 +188,16 @@ public class Console implements DrawItem {
     }
 
 
+    public String readln(Object line) {
+        println(line);
+        return readln();
+    }
+
+    public String read(Object line) {
+        print(line);
+        return readln();
+    }
+
     public String readln() {
         curr.enabled = true;
         // obtaining a local reference for modifying the required latch
@@ -209,8 +220,15 @@ public class Console implements DrawItem {
         return lastInput;
     }
 
-    public void println(String text) {
-        rows0.add(new Row(RowMode.OUT, text, true, att));
+    public void println(Object text) {
+        rows0.add(new Row(RowMode.OUT, text == null ? "" : text.toString(), true, att));
+        if (rows0.size() > maxBufferRows) {
+            rows0.remove(0);
+        }
+    }
+
+    public void print(Object text) {
+        rows0.add(new Row(RowMode.OUT, text == null ? "" : text.toString(), true, att));
         if (rows0.size() > maxBufferRows) {
             rows0.remove(0);
         }
@@ -232,7 +250,7 @@ public class Console implements DrawItem {
                         fill.add(new Row(rr.mode, line, true, rr.att));
                         break;
                     } else {
-                        if(maxCols<=0){
+                        if (maxCols <= 0) {
                             break;
                         }
                         String s = line.substring(0, maxCols);
@@ -244,7 +262,7 @@ public class Console implements DrawItem {
         }
     }
 
-    public void clear(){
+    public void clear() {
         rows0.clear();
     }
 
@@ -289,7 +307,7 @@ public class Console implements DrawItem {
                         g.setFont(monospacedBold);
                         g.drawString("_", x + (cursor * w), y + 5);
                         g.setFont(monospaced);
-                    }else{
+                    } else {
                         g.setColor(att.currColor2);
                         g.setFont(monospacedBold);
                         g.drawString("_", x + (cursor * w), y + 5);

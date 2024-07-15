@@ -16,7 +16,7 @@ public class AdamConsole implements AdamLib {
 
     private Scanner scanner = new Scanner(System.in);
 
-    public String readln(String message) {
+    public String readln(Object message) {
         if (message != null) {
             System.out.print(message);
         }
@@ -24,7 +24,25 @@ public class AdamConsole implements AdamLib {
     }
 
     @Override
-    public void println(String message) {
+    public String readln() {
+        return scanner.nextLine();
+    }
+
+    @Override
+    public String read(Object message) {
+        if (message != null) {
+            System.out.print(message);
+        }
+        return scanner.nextLine();
+    }
+
+    @Override
+    public void print(Object message) {
+        System.out.print(message);
+    }
+
+    @Override
+    public void println(Object message) {
         System.out.println(message);
     }
 

@@ -73,7 +73,7 @@ public class Example {
         });
         run(() -> {
             while (true) {
-                rotate(0);
+                setAngle(0);
                 rotate(0, 360, 30);
             }
         });

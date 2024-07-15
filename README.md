@@ -89,33 +89,59 @@ A single import line should be necessary ;
 ```
 
 ## Styling
+    styling methods are applicable to the previous element
 ```java
     setLineWidth(double); 
-    setLabel(text); 
+    setLabel(text);
+        // add a label for the previous element
     flipH(); 
-    flipV(); 
-    flipVH(); 
-    setFlipH(boolean); 
-    setFlipV(boolean); 
-    setFlipVH(boolean); 
-    setSize(double,double?); 
-    setWidth(double); 
-    setHeight(double); 
-    setLineStyle(enum|string|int); 
-    setLineStyleDashed(); 
-    setLineStyleNormal(); 
-    setBackgroundColor(); 
-    setPointColor(); 
-    setPointStyle(); 
-    setPointStyle(); 
-    setLineColor(); 
-    setTextColor(); 
-    fill(boolean?); 
-    drawBorder(boolean?); 
-    setFont(font|string|number); 
+        // flip/unflip image horizontally
+    flipV();
+        // flip/unflip image vertically
+    flipVH();
+        // flip/unflip image vertically and horizontally
+    setFlipH(boolean);
+        // flip image horizontally
+    setFlipV(boolean);
+        // flip image vertically
+    setFlipVH(boolean);
+        // flip image vertically and horizontally
+    setSize(number,number?);
+        // set element size (width and hight)
+    setWidth(number);
+        // set element width
+    setHeight(number);
+        // set element height
+    setLineStyle(enum|string|int);
+         // values can be NORMAL, DASHED
+    setBackgroundColor(color|string|int);
+         // set background color
+         // values can be red, blue, yellow, etc. or html format like #1245FF
+    setPointColor(color|string|int);
+        // set point color
+        // values can be red, blue, yellow, etc. or html format like #1245FF
+    setPointStyle(enum|string|int);
+        // set line/border style
+        // values can be CROSS,PLUS,DOT
+    setLineColor(color|string|int);
+        // set line color
+        // values can be red, blue, yellow, etc. or html format like #1245FF
+    setTextColor(color|string|int);
+        // set text color
+        // values can be red, blue, yellow, etc. or html format like #1245FF
+    fill(boolean?);
+        // set line color
+        // values can be red, blue, yellow, etc. or html format like #1245FF
+    drawBorder(boolean?);
+        // draw border
+    setFont(font|string|number);
+        // change font
     setFontSize(number); 
+        // change font size
     align(enum|string|int);
-    rotate(angle);
+        // change element alignment
+    setAngle(angle);
+        // change element rotation angle
 ```
 
 ## Animations

@@ -20,7 +20,7 @@ public class Demo {
         while(true) {
             println("What is your name?");
             String name = readln();
-            if("clear".equals(name)){
+            if(eq("clear",name)){
                 clearConsole();
             }else {
                 println("Hello " + name + ". Nice to meet you!");

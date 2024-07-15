@@ -259,17 +259,26 @@ public class lib {
         GUI.base().run("setAlign", align);
     }
 
-    public static void println(String message) {
+    public static void println(Object message) {
         lib.println(message);
     }
 
-    public static String readln(String message) {
+    public static void print(Object message) {
+        lib.print(message);
+    }
+
+    public static String readln(Object message) {
         return lib.readln(message);
     }
 
     public static String readln() {
-        return readln(null);
+        return lib.readln();
     }
+
+    public static String read(Object message) {
+        return lib.read(message);
+    }
+
     public static void clearConsole(){
         GUI.base().clear();
     }
@@ -310,8 +319,8 @@ public class lib {
         GUI.base().rotate(fromAngle, toAngle, seconds);
     }
 
-    public static void rotate(double angle) {
-        GUI.base().rotate(angle);
+    public static void setAngle(double angle) {
+        GUI.base().setAngle(angle);
     }
 
     public static void speedUp() {

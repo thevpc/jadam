@@ -5,10 +5,13 @@
 package jadam.impl;
 
 /**
- *
  * @author vpc
  */
 public interface AdamLib {
-    String readln(String message);
-    void println(String message);
+    String readln();
+    String readln(Object message);
+    String read(Object message);
+
+    void println(Object message);
+    void print(Object message);
 }
