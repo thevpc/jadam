@@ -4,6 +4,7 @@ import jadam.impl.gui.AbstractDrawItem;
 import jadam.impl.gui.DrawContext;
 import jadam.impl.gui.ItemProps;
 import jadam.impl.util.DrawContextUtils;
+import jadam.impl.util.GeomUtils;
 
 import java.awt.geom.Rectangle2D;
 
@@ -13,6 +14,12 @@ public class Circle extends AbstractDrawItem {
     public Circle(double radius) {
         super("circle");
         this.radius = radius;
+    }
+
+    @Override
+    public Rectangle2D modelBounds() {
+        double w= radius;
+        return GeomUtils.boundsByCenter(2*w, 2*w, getProperties());
     }
 
     @Override

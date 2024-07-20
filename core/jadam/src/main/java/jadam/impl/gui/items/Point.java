@@ -14,6 +14,17 @@ public class Point extends AbstractDrawItem {
         super("point");
     }
 
+    @Override
+    public Rectangle2D modelBounds() {
+        ItemProps a = getProperties();
+        double x = a.getX();
+        double y = a.getY();
+        return new Rectangle2D.Double(
+                x, y,
+                0,
+                0
+        );
+    }
 
     @Override
     public Rectangle2D bounds(DrawContext c) {

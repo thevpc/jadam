@@ -19,6 +19,7 @@ import jadam.impl.util.CompareUtils;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Random;
 import java.util.StringTokenizer;
 
@@ -59,7 +60,7 @@ public class lib {
     public static final Color[] colors = ColorUtils.colors;
 
     private static AdamLib CONSOLE = new AdamConsole();
-    private static AdamGui GUI = new AdamGui();
+    private static AdamGuiHolder.AdamGUI GUI = new AdamGuiHolder().lib();
     private static AdamLib lib = GUI;
 
     public static void useConsole() {
@@ -75,7 +76,7 @@ public class lib {
     }
 
     public static Grid drawGrid() {
-        return GUI.base().drawGrid();
+        return GUI.base().grid();
     }
 
     public static Text drawText(String text) {
@@ -83,7 +84,11 @@ public class lib {
     }
 
     public static void goTo(double x, double y) {
-        GUI.base().goTo(x, y);
+        globalProps().setXY(x, y);
+    }
+
+    private static GlobalProps globalProps() {
+        return GUI.base().globalProps();
     }
 
     public static Line lineTo(double x, double y) {
@@ -124,35 +129,35 @@ public class lib {
     }
 
     public static void setLineWidth(int lineWidth) {
-        GUI.base().run("setLineWidth", lineWidth);
+        invoke("setLineWidth", lineWidth);
     }
 
     public static void setLabel(String label) {
-        GUI.base().run("setLabel", label);
+        invoke("setLabel", label);
     }
 
     public static void flipH() {
-        GUI.base().run("flipH");
+        invoke("flipH");
     }
 
     public static void flipV() {
-        GUI.base().run("flipV");
+        invoke("flipV");
     }
 
     public static void flipVH() {
-        GUI.base().run("flipVH");
+        invoke("flipVH");
     }
 
     public static void setFlipH(boolean value) {
-        GUI.base().run("setFlipH", value);
+        invoke("setFlipH", value);
     }
 
     public static void setFlipV(boolean value) {
-        GUI.base().run("setFlipV", value);
+        invoke("setFlipV", value);
     }
 
     public static void setFlipVH(boolean value) {
-        GUI.base().run("setFlipVH", value);
+        invoke("setFlipVH", value);
     }
 
     public static void setSize(double w, double h) {
@@ -161,23 +166,23 @@ public class lib {
     }
 
     public static void setWidth(double value) {
-        GUI.base().run("setWidth", value);
+        invoke("setWidth", value);
     }
 
     public static void setHeight(double value) {
-        GUI.base().run("setHeight", value);
+        invoke("setHeight", value);
     }
 
     public static void setLineStyle(int lineStyle) {
-        GUI.base().run("setLineStyle", lineStyle);
+        invoke("setLineStyle", lineStyle);
     }
 
     public static void setLineStyle(String lineStyle) {
-        GUI.base().run("setLineStyle", lineStyle);
+        invoke("setLineStyle", lineStyle);
     }
 
     public static void setLineStyle(LineStyle lineStyle) {
-        GUI.base().run("setLineStyle", lineStyle);
+        invoke("setLineStyle", lineStyle);
     }
 
     public static void setLineStyleDashed() {
@@ -189,31 +194,31 @@ public class lib {
     }
 
     public static void setBackgroundColor(Paint color) {
-        GUI.base().run("setBackgroundColor", color);
+        invoke("setBackgroundColor", color);
     }
 
     public static void setPointColor(Color color) {
-        GUI.base().run("setPointColor", color);
+        invoke("setPointColor", color);
     }
 
     public static void setPointStyle(PointStyle pointStyle) {
-        GUI.base().run("setPointStyle", pointStyle);
+        invoke("setPointStyle", pointStyle);
     }
 
     public static void setPointStyle(String pointStyle) {
-        GUI.base().run("setPointStyle", pointStyle);
+        invoke("setPointStyle", pointStyle);
     }
 
     public static void setPointStyle(int pointStyle) {
-        GUI.base().run("setPointStyle", pointStyle);
+        invoke("setPointStyle", pointStyle);
     }
 
     public static void setLineColor(Color color) {
-        GUI.base().run("setLineColor", color);
+        invoke("setLineColor", color);
     }
 
     public static void setTextColor(Color color) {
-        GUI.base().run("setTextColor", color);
+        invoke("setTextColor", color);
     }
 
 
@@ -227,7 +232,7 @@ public class lib {
     }
 
     public static void setFill(boolean fill) {
-        GUI.base().run("setFill", fill);
+        invoke("setFill", fill);
     }
 
     public static void drawBorder(Color color) {
@@ -240,23 +245,23 @@ public class lib {
     }
 
     public static void drawBorder(boolean drawBorder) {
-        GUI.base().run("setDrawBorder", drawBorder);
+        invoke("setDrawBorder", drawBorder);
     }
 
     public static void setFont(Font font) {
-        GUI.base().run("setFont", font);
+        invoke("setFont", font);
     }
 
     public static void setFont(String font) {
-        GUI.base().run("setFont", font);
+        invoke("setFont", font);
     }
 
     public static void setFontSize(double fontSize) {
-        GUI.base().run("setFontSize", fontSize);
+        invoke("setFontSize", fontSize);
     }
 
     public static void align(Align align) {
-        GUI.base().run("setAlign", align);
+        invoke("setAlign", align);
     }
 
     public static void println(Object message) {
@@ -280,7 +285,7 @@ public class lib {
     }
 
     public static void clearConsole(){
-        GUI.base().clear();
+        GUI.base().console().clear();
     }
 
     public static String readString() {
@@ -311,16 +316,34 @@ public class lib {
         GUI.base().sleep(millis);
     }
 
-    public static void move(double x, double y, int seconds) {
-        GUI.base().move(x, y, seconds);
+    public static void moveTo(double x, double y) {
+        last().moveTo(x, y);
+    }
+    public static void moveTo(double x, double y, int seconds) {
+        last().moveTo(x, y, seconds);
     }
 
-    public static void rotate(double fromAngle, double toAngle, int seconds) {
-        GUI.base().rotate(fromAngle, toAngle, seconds);
+    public static void moveToBy(double x, double y) {
+        last().moveBy(x, y);
+    }
+    public static void moveToBy(double x, double y, int seconds) {
+        last().moveBy(x, y, seconds);
     }
 
-    public static void setAngle(double angle) {
-        GUI.base().setAngle(angle);
+    public static void rotateTo(double toAngle, int seconds) {
+        last().rotateTo(toAngle, seconds);
+    }
+
+    public static void rotateBy(double toAngle, int seconds) {
+        last().rotateBy(toAngle, seconds);
+    }
+
+    public static void rotateTo(double angle) {
+        last().rotateTo(angle);
+    }
+
+    public static void rotateBy(double angle) {
+        last().rotateBy(angle);
     }
 
     public static void speedUp() {
@@ -494,7 +517,7 @@ public class lib {
 
     public static void run(Runnable run) {
         if (run != null) {
-            new Thread(run).start();
+            GUI.base().startThread(run);
         }
     }
 
@@ -615,12 +638,12 @@ public class lib {
     }
 
     public static void hideGrid() {
-        GUI.base().drawGrid().props.setVisible(false);
+        GUI.base().grid().setVisible(false);
         GUI.base().refresh();
     }
 
     public static void showGrid() {
-        GUI.base().drawGrid().props.setVisible(true);
+        GUI.base().grid().setVisible(true);
         GUI.base().refresh();
     }
 
@@ -636,14 +659,14 @@ public class lib {
     }
 
     public static void setGridIntervalX(double minX, double maxX) {
-        GUI.base().drawGrid();
-        GUI.base().setGridIntervalX(minX, maxX);
+        GUI.base().grid();
+        globalProps().setGridIntervalX(minX, maxX);
         GUI.base().refresh();
     }
 
     public static void setGridIntervalY(double minY, double maxY) {
-        GUI.base().drawGrid();
-        GUI.base().setGridIntervalY(minY, maxY);
+        GUI.base().grid();
+        globalProps().setGridIntervalY(minY, maxY);
         GUI.base().refresh();
     }
 
@@ -653,15 +676,38 @@ public class lib {
     }
 
     public static void setGridTicX(double x) {
-        GUI.base().drawGrid();
-        GUI.base().run("setGridTicX", x);
-        GUI.base().refresh();
+        GUI.base().grid();
+        invoke("setGridTicX", x);
     }
 
     public static void setGridTicY(double y) {
-        GUI.base().drawGrid();
-        GUI.base().run("setGridTicY", y);
+        GUI.base().grid();
+        invoke("setGridTicY", y);
+    }
+
+    private static void invoke(String name, Object... args) {
+        Optional<Runnable> t = GUI.base().runnable(name, args);
+        if(t.isEmpty()){
+            throw new IllegalArgumentException("method not found " + name);
+        }
+        t.get().run();
         GUI.base().refresh();
+    }
+
+    public static ItemGroup startGroup() {
+        return GUI.base().add(new ItemGroup(true));
+    }
+
+    public static ItemGroup closeGroup() {
+        return GUI.base().add(new ItemGroup(false));
+    }
+
+    public static DrawItemAny last() {
+        DrawItemAny drawItemAny = GUI.base().lastItem();
+        if(drawItemAny == null) {
+            throw new IllegalArgumentException("missing element");
+        }
+        return drawItemAny;
     }
 
 }

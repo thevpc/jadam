@@ -1,6 +1,10 @@
 package jadam.impl.util;
 
 import java.awt.*;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 
 public class ColorUtils {
     public static final Color black = Color.black;
@@ -31,7 +35,22 @@ public class ColorUtils {
     public static final Color darkMagenta = new Color(0x7c007c);
     public static final Color darkPink = new Color(0x946666);
     public static final Color darkGray = Color.darkGray;
+
+    public static final Color lightBrown = new Color(0x9a7b4f);
+    public static final Color brown = new Color(0x3b1e08);
+    public static final Color darkBrown = new Color(0x231709);
+
+    public static final Color lightGold = new Color(0xffcf40);
+    public static final Color gold = new Color(0xffd308);
+    public static final Color darkGold = new Color(0xbf9b30);
+
+    public static final Color lightViolet = new Color(0xef83ef);
+    public static final Color violet = new Color(0x9308ff);
+    public static final Color darkViolet = new Color(0x361668);
+
     public static final Color white = Color.white;
+    private static boolean loadedColors=false;
+    private static Map<String,Color> cachedColors=new HashMap<>();
 
     public static final Color[] colors = {
             black,
@@ -42,24 +61,33 @@ public class ColorUtils {
             cyan,
             magenta,
             orange,
+            gold,
+            brown,
             pink,
+            violet,
             gray,
             lightGray,
             lightBlue,
             lightRed,
             lightYellow,
+            lightGold,
             lightGreen,
             lightCyan,
             lightMagenta,
             lightOrange,
+            lightBrown,
+            lightViolet,
             lightPink,
             darkBlue,
             darkRed,
             darkOrange,
+            darkGold,
             darkYellow,
             darkGreen,
             darkCyan,
             darkMagenta,
+            darkBrown,
+            darkViolet,
             darkPink,
             darkGray,
             white,
@@ -160,35 +188,83 @@ public class ColorUtils {
                 case "white":
                     return Color.white;
                 default: {
-                    if (s.startsWith("#")) {
-                        try {
-                            return new Color(Integer.parseInt(s.substring(1), 16));
-                        } catch (Exception ex) {
-                            return defaultColor;
-                        }
+                    Color a = _createColor(s);
+                    if(a!=null){
+                        return a;
                     }
-                    if (s.indexOf(",") >= 0) {
-                        String[] a = s.split(",");
-                        if (a.length == 3 || a.length == 4) {
-                            int r = cint(a[0]);
-                            int g = cint(a[1]);
-                            int b = cint(a[2]);
-                            int aa = cint(a.length == 4 ? a[3] : null);
-                            if (r >= 0 && g >= 0 && b >= 0) {
-                                return
-                                        new Color(
-                                                r,
-                                                g,
-                                                b,
-                                                aa < 0 ? 255 : aa
-                                        )
-                                        ;
+                    s=_colorName(s);
+                    if(s!=null) {
+                        if (!loadedColors) {
+                            Properties p = new Properties();
+                            try (InputStream is = ColorUtils.class.getResourceAsStream("colors.properties")) {
+                                p.load(is);
+                            } catch (Exception ex) {
+                                throw new IllegalArgumentException(ex);
                             }
+                            for (Map.Entry<Object, Object> e : p.entrySet()) {
+                                String k = _colorName(((String) e.getKey()).trim());
+                                if(k!=null) {
+                                    if(!cachedColors.containsKey(k)) {
+                                        Color v = _createColor((String) e.getValue());
+                                        if (v != null) {
+                                            cachedColors.put(k, v);
+                                        }
+                                    }
+                                }
+                            }
+                            loadedColors = true;
+                        }
+                        Color cc = cachedColors.get(s);
+                        if(cc!=null){
+                            return cc;
                         }
                     }
                 }
             }
         }
         return defaultColor;
+    }
+
+    private static String _colorName(String s){
+        if(s==null){
+            return null;
+        }
+        s=s.replace(" ","").toLowerCase().trim();
+        if(s.length()>0){
+            return s;
+        }
+        return null;
+    }
+
+    private static Color _createColor(String s){
+        if(s!=null) {
+            if (s.startsWith("#")) {
+                try {
+                    return new Color(Integer.parseInt(s.substring(1), 16));
+                } catch (Exception ex) {
+                    return null;
+                }
+            }
+            if (s.indexOf(",") >= 0) {
+                String[] a = s.split(",");
+                if (a.length == 3 || a.length == 4) {
+                    int r = cint(a[0]);
+                    int g = cint(a[1]);
+                    int b = cint(a[2]);
+                    int aa = cint(a.length == 4 ? a[3] : null);
+                    if (r >= 0 && g >= 0 && b >= 0) {
+                        return
+                                new Color(
+                                        r,
+                                        g,
+                                        b,
+                                        aa < 0 ? 255 : aa
+                                )
+                                ;
+                    }
+                }
+            }
+        }
+        return null;
     }
 }

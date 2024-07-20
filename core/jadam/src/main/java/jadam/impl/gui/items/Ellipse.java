@@ -4,6 +4,7 @@ import jadam.impl.gui.AbstractDrawItem;
 import jadam.impl.gui.DrawContext;
 import jadam.impl.gui.ItemProps;
 import jadam.impl.util.DrawContextUtils;
+import jadam.impl.util.GeomUtils;
 
 import java.awt.geom.Rectangle2D;
 
@@ -15,6 +16,13 @@ public class Ellipse extends AbstractDrawItem {
         super("ellipse");
         this.xRadius = xRadius;
         this.yRadius = yRadius;
+    }
+
+    @Override
+    public Rectangle2D modelBounds() {
+        double w= xRadius;
+        double h= yRadius;
+        return GeomUtils.boundsByCenter(2*w, 2*h, getProperties());
     }
 
     @Override

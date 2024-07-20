@@ -17,4 +17,5 @@ public interface DrawItem {
     Runnable run(String name, Object... args);
 
     void onAdd(ItemBuildContext buildContext);
+
 }

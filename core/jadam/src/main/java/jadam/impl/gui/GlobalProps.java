@@ -2,13 +2,23 @@ package jadam.impl.gui;
 
 import java.awt.geom.Point2D;
 
-public class GlobalProps {
+public class GlobalProps implements Cloneable{
     private double x = 0;
     private double y = 0;
     private double gridMinX = -100;
     private double gridMinY = -100;
     private double gridWidth = 200;
     private double gridHeight = 200;
+    private DrawItem lastItem;
+
+    public DrawItem getLastItem() {
+        return lastItem;
+    }
+
+    public GlobalProps setLastItem(DrawItem lastItem) {
+        this.lastItem = lastItem;
+        return this;
+    }
 
     public double getX() {
         return x;
@@ -72,9 +82,35 @@ public class GlobalProps {
         return gridMinY + gridHeight;
     }
 
+    public GlobalProps setXY(double x,double y) {
+        this.x = x;
+        this.y = y;
+        return this;
+    }
+
     public GlobalProps setXY(Point2D to) {
         x = to.getX();
         y = to.getY();
         return this;
+    }
+
+    public GlobalProps setGridIntervalX(double minX, double maxX) {
+        setGridWidth(maxX - minX);
+        setGridMinX(minX);
+        return this;
+    }
+
+    public GlobalProps setGridIntervalY(double minY, double maxY) {
+        setGridHeight(maxY - minY);
+        setGridMinY(minY);
+        return this;
+    }
+
+    public GlobalProps copy() {
+        try {
+            return (GlobalProps) clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

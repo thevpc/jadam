@@ -27,6 +27,16 @@ public class Grid extends AbstractDrawItem {
     }
 
     @Override
+    public Rectangle2D modelBounds() {
+        return new Rectangle2D.Double(
+                Double.NEGATIVE_INFINITY,
+                Double.NEGATIVE_INFINITY,
+                Double.POSITIVE_INFINITY,
+                Double.POSITIVE_INFINITY
+        );
+    }
+
+    @Override
     public Runnable run(String name, Object... args) {
         Runnable r = super.run(name, args);
         if (r != null) {

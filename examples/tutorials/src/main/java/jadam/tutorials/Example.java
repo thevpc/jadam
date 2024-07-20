@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package jadam.tutorials;
+
 import java.awt.*;
 
 import static jadam.lib.*;
@@ -35,6 +36,13 @@ public class Example {
         setLabel("This is a polygon");
         fill(yellow);
         drawBorder(red);
+        run(() -> {
+            while (true) {
+                goTo(-40, 50);
+                moveTo(32, 20, 2);
+                moveTo(-40, 50, 2);
+            }
+        });
 
         goTo(-30, 30);
         arrowTo(-20, 60);
@@ -64,17 +72,17 @@ public class Example {
         run(() -> {
             while (true) {
                 goTo(-50, -50);
-                move(50, 50, 1);
+                moveTo(50, 50, 1);
                 flipH();
                 quadCurve();
-                move(-50, 50, 1);
+                moveTo(-50, 50, 1);
                 flipV();
             }
         });
         run(() -> {
             while (true) {
-                setAngle(0);
-                rotate(0, 360, 30);
+                rotateTo(0);
+                jadam.lib.rotateTo(360, 30);
             }
         });
 

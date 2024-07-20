@@ -19,6 +19,24 @@ public class Rectangle extends AbstractDrawItem {
     }
 
     @Override
+    public Rectangle2D modelBounds() {
+        ItemProps a = getProperties();
+        double fromX = a.getX();
+        double fromY = a.getY();
+        double toX = a.getX()+width;
+        double toY = a.getY()+height;
+        double minX = Math.min(fromX, toX);
+        double maxX = Math.max(fromX, toX);
+        double minY = Math.min(fromY, toY);
+        double maxY = Math.max(fromY, toY);
+        return new Rectangle2D.Double(
+                minX, minY,
+                maxX - minX,
+                maxY - minY
+        );
+    }
+
+    @Override
     public Rectangle2D bounds(DrawContext c) {
         ItemProps a = getProperties();
         double fromX = c.xPixels(a.getX());

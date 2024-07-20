@@ -2,6 +2,7 @@ package jadam.impl.gui.items;
 
 import jadam.impl.gui.AbstractDrawItem;
 import jadam.impl.gui.DrawContext;
+import jadam.impl.gui.ItemBuildContext;
 import jadam.impl.gui.ItemProps;
 import jadam.impl.util.DrawContextUtils;
 
@@ -11,6 +12,7 @@ import java.awt.geom.Rectangle2D;
 
 public class Arrow extends AbstractDrawItem {
     private Point2D to;
+    private Point2D diff;
 
     public Arrow(Point2D to) {
         super("arrow");
@@ -19,6 +21,24 @@ public class Arrow extends AbstractDrawItem {
 
     public Point2D getTo() {
         return to;
+    }
+
+    @Override
+    public Rectangle2D modelBounds() {
+        ItemProps a = getProperties();
+        double fromX = a.getX();
+        double fromY = a.getY();
+        double toX = to.getX();
+        double toY = to.getY();
+        double minX = Math.min(fromX, toX);
+        double maxX = Math.max(fromX, toX);
+        double minY = Math.min(fromY, toY);
+        double maxY = Math.max(fromY, toY);
+        return new Rectangle2D.Double(
+                minX, minY,
+                maxX - minX,
+                maxY - minY
+        );
     }
 
     @Override
@@ -60,9 +80,26 @@ public class Arrow extends AbstractDrawItem {
         });
     }
 
-//    @Override
-//    public void onAdd(ItemBuildContext buildContext) {
-//        super.onAdd(buildContext);
-//        buildContext.typeProps().setXY(to);
-//    }
+
+    @Override
+    public void onAdd(ItemBuildContext buildContext) {
+        super.onAdd(buildContext);
+//        buildContext.typeProps().setPoint(to);
+//        buildContext.globalProps().setXY(to);
+        Point2D p = getPosition();
+        diff = new Point2D.Double(to.getX() - p.getX(), to.getY() - p.getY());
+    }
+
+
+    @Override
+    public void moveTo(double x, double y) {
+        ItemProps a = this.getProperties();
+        Point2D p0 = getPosition();
+        a.setPosition(x, y);
+        to = new Point2D.Double(
+                to.getX() + x - p0.getX(),
+                to.getY() + y - p0.getY()
+        );
+        buildContext.refresh();
+    }
 }

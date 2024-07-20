@@ -21,11 +21,13 @@ import javax.swing.JComponent;
 public class AdamDrawComponent extends JComponent {
 
     public final java.util.List<DrawItem> items = new ArrayList<>();
-    public final GlobalProps globalProps = new GlobalProps();
-    public final Map<String, ItemProps> sharedAttrsByType = new LinkedHashMap<>();
+    public final InheritableThreadLocal<GlobalProps> globalProps = new InheritableThreadLocal<>();
+    public final InheritableThreadLocal<TypeProps> sharedAttrsByType = new InheritableThreadLocal<>();
     public Timer timer = new Timer();
 
     public AdamDrawComponent() {
+        globalProps.set(new GlobalProps());
+        sharedAttrsByType.set(new TypeProps());
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -59,12 +61,16 @@ public class AdamDrawComponent extends JComponent {
     }
 
     public <T extends DrawItem> T add(T i) {
-        synchronized (items) {
-            this.items.add(i);
+        if(i!=null) {
+            synchronized (items) {
+                this.items.add(i);
+            }
+            globalProps().setLastItem(i);
+            i.onAdd(new MyItemBuildContext(i.type()));
+            refresh();
+            return i;
         }
-        i.onAdd(new MyItemBuildContext(i.type()));
-        refresh();
-        return i;
+        return null;
     }
 
     public DrawItem find(String name) {
@@ -76,11 +82,6 @@ public class AdamDrawComponent extends JComponent {
             }
         }
         return null;
-    }
-
-    public void clear() {
-        console().clear();
-        refresh();
     }
 
     public void printMessage(Object text) {
@@ -105,7 +106,7 @@ public class AdamDrawComponent extends JComponent {
         return console().read(line);
     }
 
-    private Console console() {
+    public Console console() {
         Console console = (Console) find("console");
         if (console == null) {
             console = new Console();
@@ -126,7 +127,7 @@ public class AdamDrawComponent extends JComponent {
         g2.setRenderingHints(rh);
         long tic = System.currentTimeMillis();
         DrawContext drawContext = new DrawContext(
-                g2, size, globalProps, tic, this
+                g2, size, globalProps(), tic, this
         );
         DrawItem[] toDraw;
         synchronized (items) {
@@ -139,24 +140,25 @@ public class AdamDrawComponent extends JComponent {
 
     public ItemProps sharedAttrsByType(String type) {
         synchronized (sharedAttrsByType) {
-            ItemProps a = sharedAttrsByType.get(type);
+            TypeProps stringItemPropsMap = sharedAttrsByType();
+            ItemProps a = stringItemPropsMap.get(type);
             if (a != null) {
                 return a;
             }
             switch (type) {
                 case "": {
                     a = new ItemProps();
-                    sharedAttrsByType.put(type, a);
+                    stringItemPropsMap.put(type, a);
                     return a;
                 }
                 default: {
-                    ItemProps d = sharedAttrsByType.get("");
+                    ItemProps d = stringItemPropsMap.get("");
                     if (d == null) {
                         d = new ItemProps();
-                        sharedAttrsByType.put("", d);
+                        stringItemPropsMap.put("", d);
                     }
                     a = d.clone();
-                    sharedAttrsByType.put(type, a);
+                    stringItemPropsMap.put(type, a);
                     return a;
                 }
             }
@@ -164,7 +166,7 @@ public class AdamDrawComponent extends JComponent {
     }
 
     public void setSpeed(SpeedFunction speedFunction) {
-        AbstractDrawItem i = lastAbstractDrawItem();
+        DrawItemAny i = lastItem();
         if (i != null) {
             sharedAttrsByType(i.type()).setSpeed(speedFunction);
             i.getProperties().setSpeed(speedFunction);
@@ -174,7 +176,7 @@ public class AdamDrawComponent extends JComponent {
     }
 
     public void setCurve(CurveMode curve) {
-        AbstractDrawItem i = lastAbstractDrawItem();
+        DrawItemAny i = lastItem();
         if (i != null) {
             sharedAttrsByType(i.type()).setCurve(curve);
             i.getProperties().setCurve(curve);
@@ -183,33 +185,8 @@ public class AdamDrawComponent extends JComponent {
         }
     }
 
-    private AbstractDrawItem lastAbstractDrawItem() {
-        DrawItem[] items1 = items();
-        if (items1.length > 0) {
-            return (AbstractDrawItem) items1[items1.length - 1];
-        }
-        return null;
-    }
-
-    public void move(double x, double y, int seconds) {
-        AbstractDrawItem i = lastAbstractDrawItem();
-        if (i != null) {
-            i.move(x, y, seconds);
-        }
-    }
-
-    public void rotate(double fromAngle, double toAngle, int seconds) {
-        AbstractDrawItem i = lastAbstractDrawItem();
-        if (i != null) {
-            i.rotate(fromAngle, toAngle, seconds);
-        }
-    }
-
-    public void setAngle(double angle) {
-        AbstractDrawItem i = lastAbstractDrawItem();
-        if (i != null) {
-            i.rotate(angle);
-        }
+    public DrawItemAny lastItem() {
+        return (DrawItemAny) globalProps().getLastItem();
     }
 
     public void sleep(long millis) {
@@ -236,24 +213,27 @@ public class AdamDrawComponent extends JComponent {
         }
     }
 
-    public void run(String name, Object... args) {
+    public Optional<Runnable> runnable(String name, Object... args) {
         DrawItem[] items1 = items();
         for (int i = items1.length - 1; i >= 0; i--) {
             Runnable p = items1[i].run(name, args);
             if (p != null) {
-                runShared(name, name, args);
-                p.run();
-                return;
+                return Optional.of(() -> {
+                    runShared(name, name, args);
+                    p.run();
+                });
             }
         }
-        throw new IllegalArgumentException("method not found " + name);
+        return Optional.empty();
     }
 
-    public void goTo(double x, double y) {
-        globalProps.setX(x);
-        globalProps.setY(y);
-    }
-
+//    public void run(String name, Object... args) {
+//        Optional<Runnable> t = runnable(name, args);
+//        if(t.isEmpty()){
+//            throw new IllegalArgumentException("method not found " + name);
+//        }
+//        t.get().run();
+//    }
 
     public DrawItem[] items() {
         synchronized (items) {
@@ -261,12 +241,24 @@ public class AdamDrawComponent extends JComponent {
         }
     }
 
-    public Grid drawGrid() {
+    public Grid grid() {
         Grid g = (Grid) find("grid");
-        if(g==null){
+        if (g == null) {
             return add(new Grid());
         }
         return g;
+    }
+
+    public void startThread(Runnable run) {
+        if(run!=null){
+            GlobalProps oldGlobal = globalProps().copy();
+            TypeProps oldByType = sharedAttrsByType().copy();
+            new Thread(()->{
+                globalProps.set(oldGlobal);
+                sharedAttrsByType.set(oldByType);
+                run.run();
+            }).start();
+        }
     }
 
 
@@ -278,7 +270,7 @@ public class AdamDrawComponent extends JComponent {
         }
 
         public GlobalProps globalProps() {
-            return globalProps;
+            return AdamDrawComponent.this.globalProps();
         }
 
         public ItemProps typeProps() {
@@ -312,43 +304,35 @@ public class AdamDrawComponent extends JComponent {
             synchronized (items) {
                 for (int i = 0; i < count; i++) {
                     items.remove(items.size() - 1);
+                    if(items.size()>0){
+                        globalProps().setLastItem(items.get(items.size()-1));
+                    }else{
+                        globalProps().setLastItem(null);
+                    }
                 }
                 if (a != null) {
                     items.add(a);
+                    globalProps().setLastItem(a);
                 }
             }
         }
     }
 
-    //    public DrawItem text(String name) {
-//        return new AbstractDrawItem(name) {
-//            @Override
-//            public void draw(Graphics2D g, long tic) {
-//                g.drawString(name, this.pen.x, this.pen.y);
-//            }
-//
-//            @Override
-//            public DrawItemAttrs setAttrs(DrawItemAttrs attrs) {
-//                DrawItemAttrs a = super.setAttrs(attrs);
-//                Toolkit.getDefaultToolkit().getFontMetrics(font).
-//                FontRenderContext frc = new java.awt.font.FontRenderContext(a.font.getTransform(), true, true);
-//                LineMetrics m = a.font.getLineMetrics(name, frc);
-//                a=a.clone();
-//                a.x=m.
-//                return a;
-//            }
-//
-//        };
-//    }
-
-    public void setGridIntervalX(double minX, double maxX) {
-        globalProps.setGridWidth(maxX - minX);
-        globalProps.setGridMinX(minX);
+    public TypeProps sharedAttrsByType() {
+        TypeProps t = sharedAttrsByType.get();
+        if (t == null) {
+            t = new TypeProps();
+            sharedAttrsByType.set(t);
+        }
+        return t;
     }
 
-    public void setGridIntervalY(double minY, double maxY) {
-        globalProps.setGridHeight(maxY - minY);
-        globalProps.setGridMinY(minY);
+    public GlobalProps globalProps() {
+        GlobalProps t = globalProps.get();
+        if (t == null) {
+            t = new GlobalProps();
+            globalProps.set(t);
+        }
+        return t;
     }
-
 }

@@ -38,6 +38,10 @@ public class ItemProps implements Cloneable{
     private PointStyle pointStyle = PointStyle.CROSS;
     private String label =null;
 
+    public ItemProps copy(){
+        return clone();
+    }
+
     @Override
     public ItemProps clone(){
         try {
@@ -146,7 +150,7 @@ public class ItemProps implements Cloneable{
         return this;
     }
 
-    public Point2D getPoint() {
+    public Point2D getPosition() {
         return new Point2D.Double(x,y);
     }
 
@@ -154,12 +158,17 @@ public class ItemProps implements Cloneable{
         return x;
     }
 
-    public ItemProps setPoint(Point2D  p) {
+    public ItemProps setPosition(Point2D  p) {
         this.x=p.getX();
         this.y=p.getY();
         return this;
     }
 
+    public ItemProps setPosition(double x, double y) {
+        this.x=x;
+        this.y=y;
+        return this;
+    }
     public ItemProps setX(double x) {
         this.x = x;
         return this;

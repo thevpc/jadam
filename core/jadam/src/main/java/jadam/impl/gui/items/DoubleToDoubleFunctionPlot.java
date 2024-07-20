@@ -24,6 +24,16 @@ public class DoubleToDoubleFunctionPlot extends AbstractDrawItem {
     }
 
     @Override
+    public Rectangle2D modelBounds() {
+        return new Rectangle2D.Double(
+                Double.NEGATIVE_INFINITY,
+                Double.NEGATIVE_INFINITY,
+                Double.POSITIVE_INFINITY,
+                Double.POSITIVE_INFINITY
+        );
+    }
+
+    @Override
     public void drawImpl(DrawContext drawContext) {
         ItemProps a = getProperties();
         Rectangle2D bounds = bounds(drawContext);

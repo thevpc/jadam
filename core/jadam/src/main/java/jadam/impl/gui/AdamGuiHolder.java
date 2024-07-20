@@ -12,57 +12,16 @@ import java.awt.*;
 /**
  * @author vpc
  */
-public class AdamGui implements AdamLib {
+public class AdamGuiHolder {
 
     JFrame currentFrame;
     AdamDrawComponent draw;
+    AdamGUI lib= new AdamGUI(this);
 
-    @Override
-    public String readln() {
-        getFrame();
-        return draw.readln();
+
+    public AdamGUI lib() {
+        return lib;
     }
-
-    @Override
-    public String readln(Object message) {
-        getFrame();
-        return draw.readln(message);
-//        if (message == null) {
-//            message = "";
-//        }
-//        return JOptionPane.showInputDialog(null, message);
-    }
-
-    @Override
-    public String read(Object message) {
-        getFrame();
-        return draw.read(message);
-//        if (message == null) {
-//            message = "";
-//        }
-//        return JOptionPane.showInputDialog(null, message);
-    }
-
-    public AdamDrawComponent base() {
-        getFrame();
-        return draw;
-    }
-
-
-    @Override
-    public void println(Object message) {
-        getFrame();
-        draw.println(message);
-//        JOptionPane.showMessageDialog(null, message);
-    }
-
-    @Override
-    public void print(Object message) {
-        getFrame();
-        draw.printMessage(message);
-//        JOptionPane.showMessageDialog(null, message);
-    }
-
 
     private boolean ensureFrame() {
         if (currentFrame == null) {
@@ -85,5 +44,49 @@ public class AdamGui implements AdamLib {
         if (ensureFrame()) {
             currentFrame.setVisible(true);
         }
+    }
+
+    public static class AdamGUI implements AdamLib {
+        private AdamGuiHolder a;
+
+        public AdamGUI(AdamGuiHolder a) {
+            this.a = a;
+        }
+
+        @Override
+        public String readln() {
+            a.getFrame();
+            return a.draw.readln();
+        }
+
+        @Override
+        public String readln(Object message) {
+            a.getFrame();
+            return a.draw.readln(message);
+        }
+
+        @Override
+        public String read(Object message) {
+            a.getFrame();
+            return a.draw.read(message);
+        }
+
+        @Override
+        public void println(Object message) {
+            a.getFrame();
+            a.draw.println(message);
+        }
+
+        @Override
+        public void print(Object message) {
+            a.getFrame();
+            a.draw.printMessage(message);
+        }
+
+        public AdamDrawComponent base() {
+            a.getFrame();
+            return a.draw;
+        }
+
     }
 }

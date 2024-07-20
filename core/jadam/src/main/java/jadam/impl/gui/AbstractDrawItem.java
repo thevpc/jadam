@@ -15,7 +15,7 @@ import java.awt.geom.Rectangle2D;
 /**
  * @author vpc
  */
-public abstract class AbstractDrawItem implements DrawItem {
+public abstract class AbstractDrawItem implements DrawItemAny {
     private String type;
     public ItemProps props;
     public ItemBuildContext buildContext;
@@ -24,10 +24,12 @@ public abstract class AbstractDrawItem implements DrawItem {
         this.type = type;
     }
 
+    @Override
     public ItemProps getProperties() {
         return props;
     }
 
+    @Override
     public ItemProps setProperties(ItemProps attrs) {
         this.props = attrs;
         return this.props;
@@ -42,6 +44,8 @@ public abstract class AbstractDrawItem implements DrawItem {
     public String type() {
         return type;
     }
+
+    public abstract Rectangle2D modelBounds();
 
     public abstract Rectangle2D bounds(DrawContext drawContext);
 
@@ -75,13 +79,12 @@ public abstract class AbstractDrawItem implements DrawItem {
         getProperties().setY(this.buildContext.globalProps().getY());
     }
 
-    public void move(double x, double y, int seconds) {
+    public void moveTo(double x, double y, int seconds) {
         long step = 10;
         int iterations = (int) (seconds * 1000L / step);
         ItemProps a = this.getProperties();
         if (seconds <= 0) {
-            a.setX(x);
-            a.setY(y);
+            moveTo(x, y);
             return;
         }
         Point2D.Double from = new Point2D.Double(a.getX(), a.getY());
@@ -90,21 +93,61 @@ public abstract class AbstractDrawItem implements DrawItem {
 
         for (int j = 0; j < points.length; j++) {
             buildContext.sleep(step);
-            a.setPoint(points[j]);
+            moveTo(points[j].getX(), points[j].getY());
             buildContext.refresh();
         }
     }
 
-    public void rotate(double to) {
+    @Override
+    public void moveBy(double x, double y, int seconds) {
+        ItemProps a = this.getProperties();
+        moveTo(a.getX() + x, a.getY() + y, seconds);
+    }
+
+    @Override
+    public void moveBy(double x, double y) {
+        Point2D p = getPosition();
+        moveTo(p.getX()+x, p.getY()+y);
+    }
+
+    @Override
+    public void rotateBy(double step, int seconds) {
+        ItemProps a = this.getProperties();
+        rotateTo(a.getRotation() + step, seconds);
+    }
+
+    @Override
+    public void rotateTo(double to) {
         ItemProps a = this.getProperties();
         a.setRotation(to);
         buildContext.refresh();
     }
 
-    public void rotate(double from, double to, int seconds) {
+    @Override
+    public void rotateBy(double step) {
+        ItemProps a = this.getProperties();
+        a.setRotation(a.getRotation() + step);
+        buildContext.refresh();
+    }
+
+    public Point2D getPosition() {
+        ItemProps a = this.getProperties();
+        return a.getPosition();
+    }
+
+    @Override
+    public void moveTo(double x, double y) {
+        ItemProps a = this.getProperties();
+        a.setPosition(x, y);
+        buildContext.refresh();
+    }
+
+    @Override
+    public void rotateTo(double to, int seconds) {
+        ItemProps a = this.getProperties();
+        double from = a.getRotation();
         long step = 10;
         int iterations = (int) (seconds * 1000L / step);
-        ItemProps a = this.getProperties();
         if (seconds <= 0) {
             a.setRotation(to);
             return;
@@ -117,181 +160,188 @@ public abstract class AbstractDrawItem implements DrawItem {
         }
     }
 
+    @Override
     public boolean isVisible() {
         return props.isVisible();
     }
 
+    @Override
     public DrawItem setVisible(boolean visible) {
         this.props.setVisible(visible);
         return this;
     }
 
+    @Override
     public String getLabel() {
         return props.getLabel();
     }
 
+    @Override
     public DrawItem setLabel(String label) {
         this.props.setLabel(label);
         return this;
     }
 
+    @Override
     public Color getPointColor() {
         return props.getPointColor();
     }
 
+    @Override
     public DrawItem setPointColor(Color pointColor) {
         this.props.setPointColor(pointColor);
         return this;
     }
 
+    @Override
     public PointStyle getPointStyle() {
         return props.getPointStyle();
     }
 
+    @Override
     public DrawItem setPointStyle(PointStyle pointStyle) {
         this.props.setPointStyle(pointStyle);
         return this;
     }
 
+    @Override
     public double getRotation() {
         return props.getRotation();
     }
 
+    @Override
     public DrawItem setRotation(double rotation) {
         this.props.setRotation(rotation);
         return this;
     }
 
+    @Override
     public SpeedFunction getSpeed() {
         return props.getSpeed();
     }
 
+    @Override
     public DrawItem setSpeed(SpeedFunction speed) {
         this.props.setSpeed(speed);
         return this;
     }
 
+    @Override
     public CurveMode getCurve() {
         return props.getCurve();
     }
 
+    @Override
     public DrawItem setCurve(CurveMode curve) {
         this.props.setCurve(curve);
         return this;
     }
 
+    @Override
     public int getLineWidth() {
         return props.getLineWidth();
     }
 
+    @Override
     public DrawItem setLineWidth(int lineWidth) {
         this.props.setLineWidth(lineWidth);
         return this;
     }
 
+    @Override
     public LineStyle getLineStyle() {
         return props.getLineStyle();
     }
 
+    @Override
     public DrawItem setLineStyle(LineStyle lineStyle) {
         this.props.setLineStyle(lineStyle);
         return this;
     }
 
+    @Override
     public Align getAlign() {
         return props.getAlign();
     }
 
+    @Override
     public DrawItem setAlign(Align align) {
         this.props.setAlign(align);
         return this;
     }
 
+    @Override
     public boolean isDrawBorder() {
         return props.isDrawBorder();
     }
 
+    @Override
     public DrawItem setDrawBorder(boolean drawBorder) {
         this.props.setDrawBorder(drawBorder);
         return this;
     }
 
-    public Point2D getPoint() {
-        return props.getPoint();
-    }
-
-    public double getX() {
-        return props.getX();
-    }
-
-    public DrawItem setXY(Point2D p) {
-        props.setPoint(p);
-        return this;
-    }
-
-    public DrawItem setX(double x) {
-        this.props.setX(x);
-        return this;
-    }
-
-    public double getY() {
-        return props.getY();
-    }
-
-    public DrawItem setY(double y) {
-        this.props.setY(y);
-        return this;
-    }
-
+    @Override
     public Font getFont() {
         return props.getFont();
     }
 
+    @Override
     public DrawItem setFont(Font font) {
         this.props.setFont(font);
         return this;
     }
 
+    @Override
     public double getW() {
         return props.getW();
     }
 
+    @Override
     public DrawItem setW(double w) {
         this.props.setW(w);
         return this;
     }
 
+    @Override
     public double getH() {
         return props.getH();
     }
 
+    @Override
     public DrawItem setH(double h) {
         this.props.setH(h);
         return this;
     }
 
+    @Override
     public Color getLineColor() {
         return props.getLineColor();
     }
 
+    @Override
     public DrawItem setLineColor(Color lineColor) {
         this.props.setLineColor(lineColor);
         return this;
     }
 
+    @Override
     public Paint getBackgroundColor() {
         return props.getBackgroundColor();
     }
 
+    @Override
     public DrawItem setBackgroundColor(Paint backgroundColor) {
         this.props.setBackgroundColor(backgroundColor);
         return this;
     }
 
+    @Override
     public boolean isFill() {
         return props.isFill();
     }
 
+    @Override
     public DrawItem setFill(boolean fill) {
         props.setFill(fill);
         return this;
