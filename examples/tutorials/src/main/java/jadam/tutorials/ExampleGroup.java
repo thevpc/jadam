@@ -9,6 +9,7 @@ import jadam.PointStyle;
 import static jadam.lib.*;
 
 /**
+ * You can create a group of items that you can move together
  * @author vpc
  */
 public class ExampleGroup {
@@ -17,7 +18,7 @@ public class ExampleGroup {
         setPointColor(red);
         setLabel("Point A");
 
-//        startGroup();
+        startGroup();
 
         point(20, 0);
         setPointColor(darkGreen);
