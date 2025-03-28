@@ -200,7 +200,7 @@ Here is a simple **pom.xml** file to be able to use **jadam**
         <repository>
             <id>thevpc</id>
             <name>thevpc</name>
-            <url>https://thevpc.net/maven</url>
+            <url>https://maven.thevpc.net</url>
         </repository>
     </repositories>
 </project>
