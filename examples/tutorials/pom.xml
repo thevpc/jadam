@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.thevpc.jadam.examples</groupId>
     <artifactId>jadam-tutorials</artifactId>
@@ -11,17 +10,9 @@
         <maven.compiler.target>17</maven.compiler.target>
     </properties>
     <dependencies>
-        <dependency>
-            <groupId>net.thevpc.jadam</groupId>
-            <artifactId>jadam</artifactId>
-            <version>1.0</version>
-        </dependency>
+        <dependency><groupId>net.thevpc.jadam</groupId><artifactId>jadam</artifactId><version>1.0</version></dependency>
     </dependencies>
     <repositories>
-        <repository>
-            <id>thevpc</id>
-            <name>thevpc</name>
-            <url>https://maven.thevpc.net</url>
-        </repository>
+        <repository><id>thevpc</id><name>thevpc</name><url>https://maven.thevpc.net</url></repository>
     </repositories>
 </project>
